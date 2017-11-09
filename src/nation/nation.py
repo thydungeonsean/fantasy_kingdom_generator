@@ -19,6 +19,7 @@ class Nation(object):
     def __init__(self, state):
 
         self.state = state
+        self.name = None
 
         self.nation_coords = set()
         self.border_coords = set()
@@ -37,6 +38,9 @@ class Nation(object):
         # influence settings
         self.base_establish_rate = 100
         self.base_spread_rate = 90
+
+    def set_name(self, name):
+        self.name = name
 
     def set_terrain_affinity(self, affinity):
         self.terrain_affinity = affinity

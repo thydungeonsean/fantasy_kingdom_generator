@@ -3,6 +3,7 @@ from src.constants import *
 from nation_generator import NationGenerator
 from src.nation.peoples.peoples import PEOPLES
 from ..progress_bar import ProgressBar
+from name_gen import NameGen
 
 from src.map_object.army import Army
 
@@ -42,24 +43,35 @@ class NationPlacer(object):
             cls.place_nation(nation, point)
             placed += 1
 
-        cls.draw_progress_bar('SPREADING INFLUENCE', .8)
         # grow nations influence to a certain point
+        cls.draw_progress_bar('SPREADING INFLUENCE', .8)
         for i in range(cls.NATION_SIZE/2):
             state.nation_list.grow_nations(spread_amt=5)
 
-        cls.draw_progress_bar('PLACING SETTLEMENTS', .9)
         # place settlements
+        cls.draw_progress_bar('PLACING SETTLEMENTS', .9)
         cls.place_settlements(state)
 
+        cls.draw_progress_bar('WRAPPING UP', 1.0)
         for i in range(cls.NATION_SIZE / 2):
             state.nation_list.grow_nations(spread_amt=5)
 
-        cls.draw_progress_bar('WRAPPING UP', 1.0)
+        names = set()
+
         for nation in state.nation_list.list_nations():
+
+            nation_name = None
+            while nation_name is None:
+                nation_name = NameGen.generate_nation_name(nation)
+                if nation_name in names:
+                    nation_name = None
+                else:
+                    names.add(nation_name)
+                    nation.set_name(nation_name)
+
             nation.military.add_army((0, 0))
 
-        # update color overlay for all new territory
-        # state.color_overlay.update_squares(terrain.all_land)
+        print names
 
     @classmethod
     def valid_capitol_point(cls, terrain, point):
