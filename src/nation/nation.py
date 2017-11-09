@@ -3,6 +3,7 @@ from random import randint
 import math
 from population import Population
 from src.nation.buildings.settlement import Settlement
+from military import Military
 
 
 class Nation(object):
@@ -17,6 +18,8 @@ class Nation(object):
 
     def __init__(self, state):
 
+        self.state = state
+
         self.nation_coords = set()
         self.border_coords = set()
         self.spread_coords = set()
@@ -29,8 +32,7 @@ class Nation(object):
 
         self.buildings = []
         self.population = Population(self)
-
-        self.state = state
+        self.military = Military(self)
 
         # influence settings
         self.base_establish_rate = 100

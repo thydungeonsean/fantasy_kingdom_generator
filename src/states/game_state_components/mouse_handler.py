@@ -24,3 +24,13 @@ class MouseHandler(object):
 
         pos = pygame.mouse.get_pos()
         return self.state.ui.click(pos)
+
+    def right_click(self):
+
+        coord = self.get_mouse_coord()
+        nation = self.state.nation_list.get_nation_at_point(coord)
+        if nation is not None:
+            self.open_nation_panel(nation)
+
+    def open_nation_panel(self, nation):
+        pass

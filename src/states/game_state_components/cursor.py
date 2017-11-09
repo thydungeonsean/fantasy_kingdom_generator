@@ -19,7 +19,7 @@ class Cursor(object):
 
         self.power = None
 
-        self.shown = False
+        self.shown = True
 
         self.images = self.set_images()
 
@@ -53,7 +53,7 @@ class Cursor(object):
         if new != self.coord and new is not None:
             self.change(new)
             coord_on_map = self.state.mouse_handler.get_mouse_coord()
-            if self.state.terrain_map.point_in_bounds(coord_on_map) and self.power.point_is_valid(coord_on_map):
+            if self.state.terrain_map.point_in_bounds(coord_on_map):  # and self.power.point_is_valid(coord_on_map):
                 self.cursor = Cursor.POS
             else:
                 self.cursor = Cursor.NEG

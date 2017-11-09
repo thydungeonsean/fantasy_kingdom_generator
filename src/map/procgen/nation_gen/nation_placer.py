@@ -1,6 +1,10 @@
 from random import *
 from src.constants import *
 from nation_generator import NationGenerator
+from src.nation.peoples.peoples import PEOPLES
+from ..progress_bar import ProgressBar
+
+from src.map_object.army import Army
 
 
 class NationPlacer(object):
@@ -17,6 +21,8 @@ class NationPlacer(object):
     @classmethod
     def generate_nations(cls, state):
 
+        cls.draw_progress_bar('PLACING NATIONS', .7)
+
         terrain = state.terrain_map
 
         valid_points = list(terrain.all_land)
@@ -24,25 +30,33 @@ class NationPlacer(object):
         colors = list(cls.COLORS[:])
         shuffle(colors)
 
+        peoples = cls.generate_world_population()
+
         placed = 0
         while placed < cls.NUMBER_OF_NATIONS and valid_points:
 
             point = choice(valid_points)
             valid_points = cls.space_from_new_nation(point, valid_points)
 
-            nation = cls.generate_nation(state, point, colors)
+            nation = cls.generate_nation(state, point, colors, peoples)
             cls.place_nation(nation, point)
             placed += 1
 
+        cls.draw_progress_bar('SPREADING INFLUENCE', .8)
         # grow nations influence to a certain point
         for i in range(cls.NATION_SIZE/2):
             state.nation_list.grow_nations(spread_amt=5)
 
+        cls.draw_progress_bar('PLACING SETTLEMENTS', .9)
         # place settlements
         cls.place_settlements(state)
 
         for i in range(cls.NATION_SIZE / 2):
             state.nation_list.grow_nations(spread_amt=5)
+
+        cls.draw_progress_bar('WRAPPING UP', 1.0)
+        for nation in state.nation_list.list_nations():
+            nation.military.add_army((0, 0))
 
         # update color overlay for all new territory
         # state.color_overlay.update_squares(terrain.all_land)
@@ -72,7 +86,7 @@ class NationPlacer(object):
         nation.update_borders()
 
     @classmethod
-    def generate_nation(cls, state, point, colors):
+    def generate_nation(cls, state, point, colors, peoples):
 
         # create the capitol
         # find the preferred terrain
@@ -80,7 +94,7 @@ class NationPlacer(object):
         # any other nation stuff
         # set color
 
-        nation = NationGenerator.generate_nation(state, point, colors)
+        nation = NationGenerator.generate_nation(state, point, colors, peoples)
 
         # print nation.color
         # print nation.terrain_affinity.affinities
@@ -125,3 +139,16 @@ class NationPlacer(object):
             nation_coords = list(set(nation_coords).difference(zone))
             placed += 1
 
+    @classmethod
+    def generate_world_population(cls):
+
+        peoples = []
+
+        for p in PEOPLES:
+            peoples.extend([p] * 3)  # 3 copies of each people in the overal peoples list
+
+        return peoples
+
+    @classmethod
+    def draw_progress_bar(cls, message, progress):
+        ProgressBar.draw_load_bar(message, progress)

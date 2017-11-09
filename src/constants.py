@@ -55,6 +55,9 @@ WHITE = (255, 255, 255)
 
 SHADE = (50, 50, 50)
 
+PROGRESS_BAR = (255, 255, 255)
+UNFILLED_BAR = (100, 100, 100)
+
 COLORKEY = WHITE
 
 # nation colors

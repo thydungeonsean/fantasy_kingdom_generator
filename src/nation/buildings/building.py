@@ -1,4 +1,4 @@
-from src.image.building_image import BuildingImage
+from src.image.map_object_image import MapObjectImage
 
 
 class Building(object):
@@ -10,7 +10,7 @@ class Building(object):
         self.coord = coord
         self.building_class = building_class
 
-        self.building_image = BuildingImage(image_key, self.nation.color, self)
+        self.building_image = MapObjectImage(image_key, self, self.nation.color)
 
     def draw(self, surface):
 

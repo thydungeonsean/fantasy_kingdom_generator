@@ -1,11 +1,9 @@
 from src.nation.nation import Nation
 from src.nation.buildings.capitol import Capitol
 from src.nation.terrain_affinity import TerrainAffinity
-from random import randint, sample
+from random import randint, shuffle
 from src.constants import *
-from src.nation.peoples.peoples import PEOPLES
 from src.nation.peoples.people import People
-from src.nation.population import Population
 
 
 class NationGenerator(object):
@@ -19,7 +17,7 @@ class NationGenerator(object):
     THREE_PEOPLES = 5
 
     @classmethod
-    def generate_nation(cls, state, point, colors):
+    def generate_nation(cls, state, point, colors, peoples):
 
         # get a terrain_breakdown of starting position
 
@@ -34,7 +32,7 @@ class NationGenerator(object):
         capitol = Capitol(nation, point)
         nation.add_building(capitol)
 
-        cls.generate_population(nation)
+        cls.generate_population(nation, peoples)
 
         return nation
 
@@ -87,7 +85,7 @@ class NationGenerator(object):
         return kwargs
 
     @classmethod
-    def generate_population(cls, nation):
+    def generate_population(cls, nation, peoples):
 
         population = nation.population
 
@@ -100,7 +98,12 @@ class NationGenerator(object):
         elif roll < cls.TWO_PEOPLES:
             num = 2
 
-        people_keys = sample(PEOPLES, num)
-        for p in people_keys:
+        selected = set()
+
+        for p in range(num):
+            shuffle(peoples)
+            selected.add(peoples.pop())
+
+        for p in selected:
             people = People(p, nation)
             population.add_people(people)

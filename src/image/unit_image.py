@@ -50,3 +50,6 @@ class UnitImage(Image):
             pix_array.replace(self.color, color)
 
         self.color = color
+
+    def set_position(self, pos):
+        self.coord = pos

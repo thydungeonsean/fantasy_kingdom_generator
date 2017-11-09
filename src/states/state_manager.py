@@ -1,11 +1,12 @@
 from game_state import GameState
+from main_menu_state import MainMenuState
 
 
 class StateManager(object):
 
     def __init__(self):
 
-        self.current_state = GameState(self)
+        self.current_state = MainMenuState(self)
 
     def main(self):
 

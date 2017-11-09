@@ -33,6 +33,8 @@ class NationList(object):
         for nation in self.list_nations():
             nation.draw_buildings(surface)
 
+            nation.military.draw_armies(surface)
+
     def get_nation_at_point(self, point, mode=0):
         for nation in self.list_nations():
             if point in nation.nation_coords:

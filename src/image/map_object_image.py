@@ -4,10 +4,15 @@ from src.constants import TILEW, TILEH
 
 class MapObjectImage(Image):
 
-    def __init__(self, key, owner):
+    BASE_COLOR = (125, 125, 125)
+
+    def __init__(self, key, owner, color):
 
         self.owner = owner
         Image.__init__(self, key, transparent=True)
+
+        self.color = MapObjectImage.BASE_COLOR
+        self.recolor_image(color)
 
     def set_position(self):
         self.coord = self.get_relative_coord()

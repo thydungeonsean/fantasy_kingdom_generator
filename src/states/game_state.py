@@ -8,6 +8,7 @@ from src.map.color_overlay import ColorOverlay
 from game_state_components.nation_list import NationList
 from src.map.procgen.nation_gen.nation_placer import NationPlacer
 from game_state_components.mouse_handler import MouseHandler
+from game_state_components.cursor import Cursor
 
 
 class GameState(AbstractState):
@@ -33,6 +34,7 @@ class GameState(AbstractState):
         # game_state_components
         self.view = View(self)
         self.mouse_handler = MouseHandler(self)
+        self.cursor = Cursor(self)
 
         self.initialize()
 
@@ -44,8 +46,16 @@ class GameState(AbstractState):
 
     def initialize_ui(self):
 
-        #return UI.create_game_ui(self)
-        return UI(self)
+        return UI.create_nation_choose_ui(self)
+
+    def switch_ui(self, mode):
+        if mode == 'strategic':
+            new_ui = UI.create_strategic_mode_ui(self)
+        elif mode == 'battle':
+            new_ui = UI.create_battle_mode_ui(self)
+        else:
+            raise Exception('invalid ui key')
+        self.ui = new_ui
 
     def handle_input(self):
 
@@ -86,12 +96,14 @@ class GameState(AbstractState):
 
                 if event.button == 1:
                     self.mouse_handler.left_click()
-                    print self.mouse_handler.get_mouse_coord()
                     self.place_settlement(self.mouse_handler.get_mouse_coord())
+
+                elif event.button == 3:  # right click
+                    self.mouse_handler.right_click()
 
             elif event.type == MOUSEMOTION:
 
-                pass
+                self.cursor.update()
 
     def trigger_exit(self):
         self.exit_state = True
@@ -109,6 +121,8 @@ class GameState(AbstractState):
         # self.color_overlay.draw(self.screen)
 
         self.nation_list.draw(self.screen)
+
+        self.cursor.draw(self.screen)
         self.ui.draw(self.screen)
 
     def game_over(self):

@@ -1,4 +1,35 @@
+from state_template.main_menu_template import MainMenuUI
+
+
 class UI(object):
+
+    @classmethod
+    def create_main_menu_ui(cls, state):
+        ui = cls(state)
+
+        MainMenuUI(state, ui).add_to_state()
+
+        return ui
+
+    @classmethod
+    def create_nation_choose_ui(cls, state):
+        ui = cls(state)
+
+        return ui
+
+    @classmethod
+    def create_strategic_mode_ui(cls, state):
+
+        ui = cls(state)
+
+        return ui
+
+    @classmethod
+    def create_battle_mode_ui(cls, state):
+
+        ui = cls(state)
+
+        return ui
 
     def __init__(self, state):
 

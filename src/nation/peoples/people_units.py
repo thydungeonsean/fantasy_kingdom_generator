@@ -6,7 +6,7 @@ unit_associations = {
 
     'naga': ('naga_soldier', 'naga_archer', 'naga_mage'),
 
-    'orge': ('orge_grunt', 'ogre_soldier', 'orge_magi'),
+    'orge': ('ogre_grunt', 'ogre_soldier', 'ogre_magi'),
 
     'goblin': ('goblin_grunt', 'goblin_archer', 'goblin_chief'),
 
