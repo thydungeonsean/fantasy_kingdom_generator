@@ -1,53 +1,29 @@
-import pygame
 from src.constants import *
 from border import Border
 from font_draw import FontDraw
+from element import Element
 
 
-class Button(object):
+class Button(Element):
 
-    BUTTON_W = SCALE * 100
-    BUTTON_H = SCALE * 20
+    BUTTON_W = SCALE * 200
+    BUTTON_H = SCALE * 40
 
     START_COLOR = WHITE
     HIGHLIGHT_COLOR = YELLOW
 
     def __init__(self, coord, text):
 
-        self.coord = coord
-        self.w = Button.BUTTON_W
-        self.h = Button.BUTTON_H
-
-        self.ui = None
+        w = Button.BUTTON_W
+        h = Button.BUTTON_H
+        Element.__init__(self, coord, w, h)
 
         self.color = Button.START_COLOR
 
-        self.surface = self.initialize_surface()
         self.border = Border(self, self.color)
         self.text = text
 
         self.render_image()
-
-    def initialize_surface(self):
-
-        image = pygame.Surface((self.w, self.h)).convert()
-        image.fill(BLACK)
-
-        return image
-
-    def set_ui(self, ui):
-        self.ui = ui
-
-    @property
-    def x(self):
-        return self.coord[0]
-
-    @property
-    def y(self):
-        return self.coord[1]
-
-    def point_is_over(self, (x, y)):
-        return self.x <= x < self.x + self.w and self.y <= y < self.y + self.h
 
     def click(self, point):
         if self.point_is_over(point):
@@ -63,13 +39,6 @@ class Button(object):
         text_image = FontDraw.get_instance().create_text_box(self.text, self.color, self.w, self.h)
         self.surface.blit(text_image, (0, 0))
         self.border.draw(self.surface)
-
-    def draw(self, surface):
-
-        surface.blit(self.surface, self.coord)
-
-    def run(self):
-        pass
 
     def update_button(self):
         self.render_image()

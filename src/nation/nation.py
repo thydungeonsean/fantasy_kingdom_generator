@@ -4,6 +4,7 @@ import math
 from population import Population
 from src.nation.buildings.settlement import Settlement
 from military import Military
+from stats import Stats
 
 
 class Nation(object):
@@ -38,6 +39,8 @@ class Nation(object):
         # influence settings
         self.base_establish_rate = 100
         self.base_spread_rate = 90
+
+        self.stats = Stats(self)
 
     def set_name(self, name):
         self.name = name

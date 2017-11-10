@@ -13,6 +13,11 @@ from game_state_components.cursor import Cursor
 
 class GameState(AbstractState):
 
+    # mode keys
+    NATION_CHOOSE = 0
+    STRATEGIC = 1
+    BATTLE = 2
+
     def __init__(self, state_manager):
 
         AbstractState.__init__(self, state_manager)
@@ -35,6 +40,10 @@ class GameState(AbstractState):
         self.view = View(self)
         self.mouse_handler = MouseHandler(self)
         self.cursor = Cursor(self)
+
+        # fields
+        self.mode = GameState.NATION_CHOOSE
+        self.player_nation = None
 
         self.initialize()
 
@@ -68,7 +77,7 @@ class GameState(AbstractState):
             elif event.type == KEYDOWN:
 
                 if event.key == K_ESCAPE:
-                    self.game_over()
+                    self.open_in_game_menu()
 
                 elif event.key == UP:
                     self.view.press('up')
@@ -118,8 +127,6 @@ class GameState(AbstractState):
         self.map_image.draw(self.screen)
         # self.map_image.draw_thumbnail(self.screen)
 
-        # self.color_overlay.draw(self.screen)
-
         self.nation_list.draw(self.screen)
 
         self.cursor.draw(self.screen)
@@ -140,4 +147,17 @@ class GameState(AbstractState):
         nation = self.nation_list.get_nation_at_point(point)
         if nation is not None:
             nation.add_settlement(point)
+
+    def choose_nation(self, nation):
+
+        self.mode = GameState.STRATEGIC
+        self.player_nation = nation
+        self.switch_ui('strategic')
+
+    # state change functions
+    def open_in_game_menu(self):
+
+        state = self.state_manager.load_in_game_menu(self)
+        self.set_next_state(state)
+        self.trigger_exit()
 

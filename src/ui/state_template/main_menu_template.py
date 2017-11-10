@@ -21,8 +21,8 @@ class MainMenuUI(StateTemplate):
 
     def make_start_button(self):
 
-        return self.make_button(MainMenuUI.start_button_coord, 'NEW GAME', self.state.start_new_game)
+        return self.make_button(MainMenuUI.start_button_coord, 'New Game', self.state.start_new_game)
 
     def make_quit_button(self):
 
-        return self.make_button(MainMenuUI.quit_button_coord, 'QUIT', self.state.quit_game)
+        return self.make_button(MainMenuUI.quit_button_coord, 'Quit', self.state.quit_game)

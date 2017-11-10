@@ -1,5 +1,7 @@
 import pygame
 from src.constants import *
+from src.ui.nation_display import NationDisplay
+from src.ui.instruction import Instruction
 
 
 class MouseHandler(object):
@@ -7,6 +9,10 @@ class MouseHandler(object):
     def __init__(self, state):
 
         self.state = state
+
+    @property
+    def ui(self):
+        return self.state.ui
 
     def left_click(self):
 
@@ -33,4 +39,12 @@ class MouseHandler(object):
             self.open_nation_panel(nation)
 
     def open_nation_panel(self, nation):
-        pass
+
+        self.clear_panels()
+        nation_display = NationDisplay(nation)
+        self.ui.add_key_element(nation_display, 'open_panel')
+
+    def clear_panels(self):
+
+        if self.ui.key_element_dict.get('open_panel', None) is not None:
+            self.ui.remove_key_element('open_panel')

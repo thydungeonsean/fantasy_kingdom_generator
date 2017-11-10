@@ -1,5 +1,6 @@
 from game_state import GameState
 from main_menu_state import MainMenuState
+from in_game_menu import InGameMenuState
 
 
 class StateManager(object):
@@ -24,4 +25,12 @@ class StateManager(object):
 
     def load_new_game(self):
         state = GameState(self)
+        return state
+
+    def load_main_menu(self):
+        state = MainMenuState(self)
+        return state
+
+    def load_in_game_menu(self, game):
+        state = InGameMenuState(self, game)
         return state

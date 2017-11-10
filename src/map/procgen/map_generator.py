@@ -19,12 +19,13 @@ class MapGenerator(object):
     @classmethod
     def generate_height_map(cls, seed=None):
 
+        cls.draw_load_bar('GENERATING HEIGHT MAP', .0)
         return HeightMap(cls.MAP_W, cls.MAP_H, seed=seed)
 
     @classmethod
     def generate_terrain_map(cls, height_map):
 
-        cls.draw_load_bar('GENERATING HEIGHT MAP', .0)
+        cls.draw_load_bar('GENERATING TERRAIN MAP', .05)
         terrain = TerrainMap(height_map)
 
         cls.draw_load_bar('SEEDING FORESTS', .1)

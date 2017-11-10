@@ -1,4 +1,5 @@
 from state_template.main_menu_template import MainMenuUI
+from state_template.in_game_menu_template import InGameMenuUI
 
 
 class UI(object):
@@ -9,6 +10,12 @@ class UI(object):
 
         MainMenuUI(state, ui).add_to_state()
 
+        return ui
+
+    @classmethod
+    def create_in_game_menu_ui(cls, state):
+        ui = cls(state)
+        InGameMenuUI(state, ui).add_to_state()
         return ui
 
     @classmethod
@@ -35,6 +42,7 @@ class UI(object):
 
         self.state = state
         self.elements = []
+        self.key_element_dict = {}
 
     def add_element(self, element):
         self.elements.append(element)
@@ -42,6 +50,17 @@ class UI(object):
 
     def remove_element(self, element):
         self.elements.remove(element)
+
+    def add_key_element(self, element, key):
+        self.key_element_dict[key] = element
+        self.elements.append(element)
+
+    def remove_key_element(self, key):
+        element = self.key_element_dict.get(key, None)
+        if element is None:
+            raise Exception('trying to remove non existant key element from ui')
+        self.remove_element(element)
+        del self.key_element_dict[key]
 
     def click(self, point):
         for element in self.elements:

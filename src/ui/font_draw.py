@@ -13,7 +13,7 @@ class FontDraw(object):
         return cls.instance
 
     def __init__(self):
-        self.font = pygame.font.Font('assets/oryxtype.ttf', 16)
+        self.font = pygame.font.Font('assets/oryxtype.ttf', 32)
 
     def create_text_image(self, text, color):
 
