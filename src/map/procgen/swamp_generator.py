@@ -35,7 +35,7 @@ class SwampGenerator(AutomataTerrainGenerator):
 
         def is_desert_border((x, y)):
 
-            adj = ((x+1, y), (x-1, y), (x, y+1), (x, y-1))
+            adj = filter(terrain.point_in_bounds, ((x+1, y), (x-1, y), (x, y+1), (x, y-1)))
             for a in adj:
                 if terrain.get_tile(a) not in (DESERT, WATER):
                     return True

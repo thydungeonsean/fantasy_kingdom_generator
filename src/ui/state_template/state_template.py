@@ -21,3 +21,7 @@ class StateTemplate(object):
         button = Button(coord, text)
         button.on_click = func
         return button
+
+    def remove_from_state(self):
+        for element in self.elements:
+            self.ui.remove_element(element)

@@ -1,6 +1,7 @@
 from game_state import GameState
 from main_menu_state import MainMenuState
 from in_game_menu import InGameMenuState
+from battle_state import BattleState
 
 
 class StateManager(object):
@@ -33,4 +34,8 @@ class StateManager(object):
 
     def load_in_game_menu(self, game):
         state = InGameMenuState(self, game)
+        return state
+
+    def start_battle(self, game, attacker, defender):
+        state = BattleState(self, game, attacker, defender)
         return state

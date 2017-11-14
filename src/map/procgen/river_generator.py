@@ -53,7 +53,7 @@ class RiverGenerator(object):
     @classmethod
     def generate_new_river(cls, terrain, short_dist_map, source, dest):
 
-        dest_map = cls.get_dijkstra([dest], terrain)
+        dest_map = cls.get_dijkstra(dest, terrain)
         river_points = [source]
 
         shore = set(filter(lambda x: terrain.adj_to_water(x), terrain.all_points))
@@ -119,7 +119,7 @@ class RiverGenerator(object):
         shore = filter(lambda x: terrain.adj_to_water(x), terrain.all_points)
         valid = filter(close_to_start, shore)
         if valid:
-            return choice(valid)
+            return [choice(valid)]
         else:
             return []
 

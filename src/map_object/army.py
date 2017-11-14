@@ -12,6 +12,7 @@ class Army(object):
         self.nation = nation
         self.state = nation.state
         self.unit_list = self.initialize_unit_list(points)
+        self.color = self.nation.color
 
         self.army_image = MapObjectImage(ARMY, self, self.nation.color)
 

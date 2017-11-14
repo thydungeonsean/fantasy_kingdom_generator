@@ -11,8 +11,8 @@ from progress_bar import ProgressBar
 
 class MapGenerator(object):
 
-    MAP_W = 120
-    MAP_H = 120
+    MAP_W = 60
+    MAP_H = 60
 
     ROUGHNESS = 10
 

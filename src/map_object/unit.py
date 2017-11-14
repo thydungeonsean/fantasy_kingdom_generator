@@ -6,6 +6,8 @@ class Unit(object):
 
         self.army = army
         self.unit_key = unit_key
+        self.coord = (0, 0)
+        self.image_coord = (0, 0)
 
         self.image = self.get_reference_to_image()
 
@@ -16,5 +18,13 @@ class Unit(object):
     def run(self):
         pass
 
-    def draw(self, surface, frame=0):
-        self.image.draw(surface, frame)
+    def draw(self, surface, frame, facing):
+
+        image_key = '_'.join((facing, frame))
+        self.image.draw_animated(surface, self.image_coord, image_key)
+
+    def set_coord(self, coord):
+        self.coord = coord
+
+    def set_image_coord(self, coord):
+        self.image_coord = coord

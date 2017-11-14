@@ -21,7 +21,7 @@ class InGameMenuState(AbstractState):
 
     def get_screen_image(self):
 
-        back_drop = self.game_state.screen
+        back_drop = self.game_state.subscreen
 
         surf = pygame.Surface((SCREENW, SCREENH)).convert()
         surf.blit(back_drop, (0, 0))

@@ -38,6 +38,7 @@ class GameState(AbstractState):
 
         # game_state_components
         self.view = View(self)
+        self.subscreen = self.set_subscreen()
         self.mouse_handler = MouseHandler(self)
         self.cursor = Cursor(self)
 
@@ -89,7 +90,8 @@ class GameState(AbstractState):
                     self.view.press('left')
 
                 elif event.key == K_SPACE:
-                    self.advance_turn()
+                    # self.advance_turn()
+                    self.trigger_mock_battle()
 
             elif event.type == KEYUP:
                 if event.key == UP:
@@ -124,12 +126,14 @@ class GameState(AbstractState):
 
     def draw(self):
 
-        self.map_image.draw(self.screen)
+        self.map_image.draw(self.subscreen)
         # self.map_image.draw_thumbnail(self.screen)
 
-        self.nation_list.draw(self.screen)
+        self.nation_list.draw(self.subscreen)
 
-        self.cursor.draw(self.screen)
+        self.cursor.draw(self.subscreen)
+
+        self.screen.blit(self.subscreen, (0, 0))
         self.ui.draw(self.screen)
 
     def game_over(self):
@@ -150,6 +154,8 @@ class GameState(AbstractState):
 
     def choose_nation(self, nation):
 
+        self.ui.remove_key_element('nation_chooser')
+
         self.mode = GameState.STRATEGIC
         self.player_nation = nation
         self.switch_ui('strategic')
@@ -161,3 +167,20 @@ class GameState(AbstractState):
         self.set_next_state(state)
         self.trigger_exit()
 
+    def trigger_mock_battle(self):
+
+        from random import sample, choice
+        from src.map_object.army import Army
+        nations = sample(self.nation_list.nation_list, 2)
+
+        if self.player_nation is not None:
+            attacker = Army(self.player_nation, (0, 0))
+        else:
+            attacker = Army(nations[0], (0, 0))
+        point = choice(self.terrain_map.get_all(DESERT))
+
+        defender = Army(nations[1], point)
+
+        state = self.state_manager.start_battle(self, attacker, defender)
+        self.set_next_state(state)
+        self.trigger_exit()

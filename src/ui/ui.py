@@ -1,5 +1,8 @@
 from state_template.main_menu_template import MainMenuUI
 from state_template.in_game_menu_template import InGameMenuUI
+from state_template.game_template import GameUITemplate
+from state_template.battle_template import BattleUITemplate
+from state_template.choose_mode_ui import NationChooseTemplate
 
 
 class UI(object):
@@ -21,13 +24,14 @@ class UI(object):
     @classmethod
     def create_nation_choose_ui(cls, state):
         ui = cls(state)
-
+        NationChooseTemplate(state, ui).add_to_state()
         return ui
 
     @classmethod
     def create_strategic_mode_ui(cls, state):
 
         ui = cls(state)
+        GameUITemplate(state, ui).add_to_state()
 
         return ui
 
@@ -35,6 +39,7 @@ class UI(object):
     def create_battle_mode_ui(cls, state):
 
         ui = cls(state)
+        BattleUITemplate(state, ui).add_to_state()
 
         return ui
 

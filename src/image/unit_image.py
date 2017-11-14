@@ -6,7 +6,7 @@ import pygame
 
 class UnitImage(Image):
 
-    BASE_COLOR = (125, 125, 125)
+    BASE_COLOR = BLACK
 
     def __init__(self, key, color):
 
@@ -34,9 +34,11 @@ class UnitImage(Image):
     def set_frames(self, key):
 
         frames = {
-            'a': self.surface,
-            'b': self.initialize_surface(self._b_frame_key(key), transparent=True)
-        }
+                  'r_a': self.surface,
+                  'r_b': self.initialize_surface(self._b_frame_key(key), transparent=True),
+                  'l_a': self.flip(self.initialize_surface(key, transparent=True)),
+                  'l_b': self.flip(self.initialize_surface(self._b_frame_key(key), transparent=True))
+                  }
         return frames
 
     def _b_frame_key(self, key):
@@ -53,3 +55,11 @@ class UnitImage(Image):
 
     def set_position(self, pos):
         self.coord = pos
+
+    def draw_animated(self, surface, coord, frame):
+        image = self.frames[frame]
+        surface.blit(image, coord)
+
+    def flip(self, surface):
+
+        return pygame.transform.flip(surface, True, False)

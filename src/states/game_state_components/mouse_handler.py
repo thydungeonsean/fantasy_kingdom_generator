@@ -2,6 +2,7 @@ import pygame
 from src.constants import *
 from src.ui.nation_display import NationDisplay
 from src.ui.instruction import Instruction
+from src.ui.nation_chooser_button import NationChooserButton
 
 
 class MouseHandler(object):
@@ -43,8 +44,15 @@ class MouseHandler(object):
         self.clear_panels()
         nation_display = NationDisplay(nation)
         self.ui.add_key_element(nation_display, 'open_panel')
+        if self.state.mode == self.state.NATION_CHOOSE:
+            nation_chooser = NationChooserButton(nation)
+            self.ui.add_key_element(nation_chooser, 'nation_chooser')
 
     def clear_panels(self):
 
         if self.ui.key_element_dict.get('open_panel', None) is not None:
             self.ui.remove_key_element('open_panel')
+            if self.state.mode == self.state.NATION_CHOOSE and \
+                    self.ui.key_element_dict.get('nation_chooser', None) is not None:
+                self.ui.remove_key_element('nation_chooser')
+

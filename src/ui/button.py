@@ -14,8 +14,7 @@ class Button(Element):
 
     def __init__(self, coord, text):
 
-        w = Button.BUTTON_W
-        h = Button.BUTTON_H
+        w, h = self.get_panel_dim()
         Element.__init__(self, coord, w, h)
 
         self.color = Button.START_COLOR
@@ -24,6 +23,9 @@ class Button(Element):
         self.text = text
 
         self.render_image()
+
+    def get_panel_dim(self):
+        return Button.BUTTON_W, Button.BUTTON_H
 
     def click(self, point):
         if self.point_is_over(point):

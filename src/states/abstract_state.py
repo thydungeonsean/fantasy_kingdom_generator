@@ -86,3 +86,6 @@ class AbstractState(object):
         else:
             self.fullscreen = True
             pygame.display.set_mode((SCREENW, SCREENH), FULLSCREEN)
+
+    def set_subscreen(self):
+        return pygame.Surface((SCREENW, SCREENH)).convert()

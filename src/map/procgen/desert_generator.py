@@ -40,8 +40,9 @@ class DesertGenerator(AutomataTerrainGenerator):
 
         above = x, y-1
         right = x+1, y
+        in_bounds = len(filter(terrain.point_in_bounds, (above, right))) == 2
 
-        return terrain.get_tile(above) == MOUNTAIN and terrain.get_tile(right) == MOUNTAIN
+        return in_bounds and terrain.get_tile(above) == MOUNTAIN and terrain.get_tile(right) == MOUNTAIN
 
     @classmethod
     def form_deserts(cls, terrain, desert_map):
