@@ -37,7 +37,7 @@ class GameState(AbstractState):
         NationPlacer.generate_nations(self)
 
         # game_state_components
-        self.view = View(self)
+        self.view = View(self, self.terrain_map.w, self.terrain_map.h)
         self.subscreen = self.set_subscreen()
         self.mouse_handler = MouseHandler(self)
         self.cursor = Cursor(self)

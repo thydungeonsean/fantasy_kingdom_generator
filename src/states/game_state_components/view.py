@@ -9,10 +9,12 @@ class View(object):
     # LOWER_LIMIT = MAP_H - DISPLAY_H + MapImage.PADDING + 1
     # RIGHT_LIMIT = MAP_W - DISPLAY_W + MapImage.PADDING + 1
 
-    def __init__(self, map_image):
+    def __init__(self, map_image, w, h):
     
         self.coord = (0, 0)
         self.map_image = map_image
+        self.max_x = w - DISPLAY_W + 1
+        self.max_y = h - DISPLAY_H + 1
         self.pressed = {'up': False, 'down': False, 'left': False, 'right': False}
         self.directions = self.pressed.keys()
         self.move = {'up': self.move_up, 'down': self.move_down, 'left': self.move_left, 'right': self.move_right}
@@ -32,8 +34,8 @@ class View(object):
                 self.move[d]()
 
     def set_coord(self, coord):
-        # if self.coord_in_limits(coord):
-        self.coord = coord
+        if self.coord_in_limits(coord):
+            self.coord = coord
         # self.map_image.set_coord(self.set_map_coord())
 
     def move_up(self):
@@ -56,9 +58,8 @@ class View(object):
         x, y = self.coord
         self.set_coord((x-1, y))
 
-    # @classmethod
-    # def coord_in_limits(cls, (x, y)):
-    #     return cls.LEFT_LIMIT <= x < cls.RIGHT_LIMIT and cls.UPPER_LIMIT <= y < cls.LOWER_LIMIT
+    def coord_in_limits(self, (x, y)):
+        return 0 <= x < self.max_x and 0 <= y < self.max_y
 
     # def set_map_coord(self):
     #
