@@ -9,17 +9,20 @@ battle_field = {
     'coord': ((SCREENW - panel_w) / 2, SCALE*25)
 }
 
-bf_coord = battle_field['coord'][0], battle_field['coord'][1] + SCALE * 100
+bf_coord = battle_field['coord'][0], battle_field['coord'][1]
 disp_w = Button.BUTTON_W + SCALE * 10
 disposition_panel = {
     'panel_w': disp_w,
-    'coord': (bf_coord[0]-disp_w, bf_coord[1]),
+    'coord': (bf_coord[0]-disp_w, bf_coord[1] + SCALE * 100),
     'right': battle_field['panel_w']+disp_w
 }
 
 
 maneuver_panel = {
     'panel_w': disp_w,
-    'coord': (bf_coord[0]-disp_w, bf_coord[1]),
+    'coord': (bf_coord[0]-disp_w, bf_coord[1] + SCALE * 100),
     'right': battle_field['panel_w']+disp_w
 }
+
+engage_coord = bf_coord[0] + (panel_w - Button.BUTTON_W) / 2, bf_coord[1] + battle_field['panel_h'] + SCALE * 5
+

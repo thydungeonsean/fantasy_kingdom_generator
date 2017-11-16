@@ -7,6 +7,7 @@ from src.ui.battle.battle_field_panel import BattleFieldPanel
 from src.battle.battle_line import BattleLine
 from battle_state_components.turn_structure import TurnStructure
 from src.ui.battle.disposition_chooser import DispositionChooser
+from src.battle.battle_cursor import BattleCursor
 
 
 class BattleState(AbstractState):
@@ -31,12 +32,17 @@ class BattleState(AbstractState):
         self.battle_lines = {'l': BattleLine(self, attacker, 'l', self.panel),
                              'r': BattleLine(self, defender, 'r', self.panel)}
         self.turn_structure = TurnStructure(self)
+        self.cursor = BattleCursor(self)
 
         self.frame = BattleState.A
         self.frame_tick = 0
 
         self.run = self.first_run
         self.initialize()
+
+    @property
+    def player_side(self):
+        return self.sides[self.player_controlled]
 
     def init_screen(self):
 
@@ -70,7 +76,6 @@ class BattleState(AbstractState):
             return self.battle_lines[key]
         else:
             side = self.sides[key]
-            print side
             return self.battle_lines[side]
 
     def get_screen_image(self):
@@ -104,8 +109,6 @@ class BattleState(AbstractState):
 
                 if event.key == K_ESCAPE:
                     self.open_in_game_menu()
-                elif event.key == K_l:
-                    self.open_disp_choose()
 
             elif event.type == KEYUP:
 
@@ -115,6 +118,13 @@ class BattleState(AbstractState):
 
                 if event.button == 1:
                     self.ui.click(pygame.mouse.get_pos())
+
+                    if self.turn_structure.stage == self.turn_structure.CHOOSE_MANEUVER \
+                            and self.cursor.selected_maneuver is not None:
+                        self.cursor.click_with_maneuver()
+
+                elif event.button == 3:
+                    self.cursor.right_click()
 
     def draw(self):
 
@@ -150,7 +160,3 @@ class BattleState(AbstractState):
         state = self.state_manager.load_in_game_menu(self)
         self.set_next_state(state)
         self.trigger_exit()
-
-    def open_disp_choose(self):
-        DispositionChooser(self, self.ui, self.sides[self.player_controlled]).add_to_state()
-

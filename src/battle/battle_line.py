@@ -20,12 +20,12 @@ class BattleLine(object):
     DEFENDING = 1
     ADVANCING = 2
 
-    def __init__(self, state, army, facing, panel):
+    def __init__(self, state, army, side, panel):
 
         self.state = state
         self.army = army
         self.units = None
-        self.facing = facing
+        self.side = side
         self.panel = panel
 
         self.w = 2 * UNITW
@@ -46,7 +46,7 @@ class BattleLine(object):
 
         frame = self.state.frame
         for unit in self.units:
-            unit.draw(surface, frame, self.facing)
+            unit.draw(surface, frame, self.side)
 
     def initialize(self):
 
@@ -63,37 +63,43 @@ class BattleLine(object):
     def get_battleline_coord(self):
 
         px, py = self.panel.coord
-        cx, cy = BattleLine.coord_dict[self.facing]
+        cx, cy = BattleLine.coord_dict[self.side]
         return px + cx, py + cy
 
     def deploy_army(self):
         from random import shuffle
 
         shuffle(self.units)
+        coords = self.coord_list[:]
+        shuffle(coords)
         u = 0
 
         for unit in self.units:
-            coord = self.coord_list[u]
+            coord = coords[u]
             self.position_unit(unit, coord)
             u += 1
 
         pass
 
-    def position_unit(self, unit, (x, y)):
-
+    def get_image_coord(self, (x, y)):
         bx, by = self.coord
-
-        if self.facing == 'l':
+        if self.side == 'l':
             ux = UNITW - (x*UNITW) + bx
         else:
             ux = x * UNITW + bx
 
-
         uy = y * UNITH + by
+        return ux, uy
+
+    def position_unit(self, unit, (x, y)):
 
         unit.set_coord((x, y))
-        unit.set_image_coord((ux, uy))
-
+        unit.set_image_coord(self.get_image_coord((x, y)))
 
     def create_units(self):
         self.units = self.army.build_army()
+
+    def point_is_over(self, (x, y)):
+        sx, sy = self.coord
+        return sx <= x < sx + self.w and sy <= y < sy + self.h
+

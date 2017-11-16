@@ -13,13 +13,14 @@ class ButtonPanel(Button):
     START_COLOR = WHITE
     HIGHLIGHT_COLOR = YELLOW
 
-    def __init__(self, coord, text):
+    def __init__(self, coord, text, num_buttons=3):
 
+        self.num_buttons = num_buttons
         Button.__init__(self, coord, text)
         self.render_image()
 
     def get_panel_dim(self):
-        return ButtonPanel.PANEL_W, 200
+        return ButtonPanel.PANEL_W, (self.num_buttons + 1) * (Button.BUTTON_H + SCALE*5) + SCALE*5
 
     def render_image(self):
         cls = ButtonPanel

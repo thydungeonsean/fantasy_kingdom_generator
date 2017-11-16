@@ -1,5 +1,6 @@
 from src.ui.battle.disposition_chooser import DispositionChooser
 from src.ui.battle.maneuver_chooser import ManeuverChooser
+from src.ui.battle.engage_button import EngageButton
 
 
 class TurnStructure(object):
@@ -17,6 +18,7 @@ class TurnStructure(object):
         self.stage = TurnStructure.CHOOSE_DISPOSITION
 
     def start_new_turn(self):
+        print 'here again'
         self.stage = TurnStructure.CHOOSE_DISPOSITION
         DispositionChooser(self.state, self.state.ui, self.state.sides[self.player]).add_to_state()
 
@@ -28,4 +30,6 @@ class TurnStructure(object):
     def player_chose_maneuver(self):
 
         self.stage = TurnStructure.ENGAGE
+        print 'engage part!!!'
         # open_engage controls
+        self.state.ui.add_element(EngageButton(self, self.state.ui))
