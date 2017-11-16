@@ -19,13 +19,26 @@ class Reposition(Maneuver):
         self.selected_unit = None
 
     def init(self):
-        pass
-        # select_highlight on all units
+        self.init_select_step()
 
     def deinit(self):
         self.clicked_cell = None
         self.selected_unit = None
         self.step = Reposition.SELECT_UNIT
+
+    def init_select_step(self):
+        self.clear_highlights()
+        for unit in self.battle_line.units:  # only valid targets
+            self.highlight_unit(unit.coord)
+
+    def init_move_step(self):
+        self.clear_highlights()
+        moves = self.battle_line.coord_list[:]
+        moves.remove(self.selected_unit.coord)
+        for point in moves:
+
+            self.highlight_unit(point)
+        self.highlight_selected_unit(self.selected_unit.coord)
 
     def click(self, (mx, my)):
 
@@ -38,7 +51,7 @@ class Reposition(Maneuver):
         if unit is not None:
             self.step = Reposition.SELECT_MOVE
             self.selected_unit = unit
-            # self.init_select_move_step
+            self.init_move_step()
 
     def select_move(self):
 
@@ -52,7 +65,7 @@ class Reposition(Maneuver):
         if unit == self.selected_unit:  # deselect
             self.selected_unit = None
             self.step = Reposition.SELECT_UNIT
-            # self.init_select_unit_step
+            self.init_select_step()
             return
 
         elif unit is not None:

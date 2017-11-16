@@ -7,9 +7,8 @@ class FallBack(Maneuver):
         Maneuver.__init__(self)
 
     def init(self):
-        pass
-
-        # highlight all fall back able units
+        for unit in self.battle_line.units:  # only valid targets
+            self.highlight_unit(unit.coord)
 
     def click(self, (mx, my)):
         cell = self.cursor.get_player_cell((mx, my))
@@ -21,5 +20,7 @@ class FallBack(Maneuver):
 
     def fall_back(self, unit):
         print 'unit falls back'
+        self.remove_unit(unit)
+        # insert fade effect(unit)
         # something to remove a unit from battleline
         pass

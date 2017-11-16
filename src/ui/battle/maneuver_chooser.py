@@ -16,7 +16,7 @@ class ManeuverChooser(StateTemplate):
 
         cls = ManeuverChooser
 
-        self.available_maneuvers = ('swap', 'reposition', 'push', 'rally')
+        self.available_maneuvers = ('swap', 'reposition', 'push', 'rally', 'fall_back')
 
         self.maneuver_function = {m: self.create_maneuver_choose_func(m) for m in self.available_maneuvers}
         self.maneuver_function['pass'] = self.skip_maneuver
@@ -53,7 +53,7 @@ class ManeuverChooser(StateTemplate):
             if self.side == 'r':
                 x += disposition_panel['right']
 
-            button = self.make_button((x, y), m.capitalize(), self.maneuver_function[m])
+            button = self.make_button((x, y), self.get_button_text(m), self.maneuver_function[m])
             buttons.append(button)
             self.button_table[m] = button
             i += 1
@@ -90,8 +90,16 @@ class ManeuverChooser(StateTemplate):
         return func
 
     def skip_maneuver(self):
+        for m in self.available_maneuvers:
+            self.deselect_button(m)
         self.maneuver_complete()
 
     def maneuver_complete(self):
         self.state.turn_structure.player_chose_maneuver()
         self.remove_from_state()
+
+    def get_button_text(self, m):
+
+        text = m.split('_')
+        text = [t.capitalize() for t in text]
+        return ' '.join(text)

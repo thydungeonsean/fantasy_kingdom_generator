@@ -79,8 +79,6 @@ class BattleLine(object):
             self.position_unit(unit, coord)
             u += 1
 
-        pass
-
     def get_image_coord(self, (x, y)):
         bx, by = self.coord
         if self.side == 'l':
@@ -103,3 +101,10 @@ class BattleLine(object):
         sx, sy = self.coord
         return sx <= x < sx + self.w and sy <= y < sy + self.h
 
+    def remove_unit(self, unit):
+        self.units.remove(unit)
+
+    def rout_unit(self, unit):
+        # flag to be destroyed
+        # update battle scale accordingly
+        self.remove_unit(unit)

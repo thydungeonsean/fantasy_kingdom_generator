@@ -12,7 +12,8 @@ class Swap(Maneuver):
     def init(self):
         # highlight entire box if there are any valid swaps
         self.valid = self.find_swaps()
-        pass
+        if self.valid:
+            self.highlight_battle_line()
 
     def deinit(self):
         self.valid = False

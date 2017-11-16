@@ -11,6 +11,8 @@ class Push(Maneuver):
     def init(self):
 
         self.valid = self.find_pushes()
+        if self.valid:
+            self.highlight_battle_line()
 
     def deinit(self):
 

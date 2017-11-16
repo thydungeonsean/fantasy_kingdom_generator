@@ -13,7 +13,8 @@ class EngageButton(Button):
         self.turn_tracker = turn_tracker
 
     def on_click(self):
-        print 'engage!'
+        print 'engage! ... needs to trigger the battle calculator and run animations and such'
         self.ui.remove_element(self)
         self.turn_tracker.start_new_turn()
+
 

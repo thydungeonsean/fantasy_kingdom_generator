@@ -18,7 +18,6 @@ class Maneuver(object):
         self.cursor = None
         self.battle_line = None
         self.panel = None
-        self.deinit()
 
     def init(self):
         pass
@@ -32,5 +31,26 @@ class Maneuver(object):
     def move_unit(self, unit, coord):
         self.battle_line.position_unit(unit, coord)
 
+    def remove_unit(self, unit):
+        self.battle_line.remove_unit(unit)
+
     def end_maneuver(self):
         self.panel.maneuver_complete()
+        self.deinit()
+        self.clear_highlights()
+
+    def highlight_unit(self, cell):
+        point = self.battle_line.get_image_coord(cell)
+        self.cursor.state.highlighter.add_square(point)
+
+    def highlight_battle_line(self):
+        point = self.battle_line.coord
+        self.cursor.state.highlighter.add_full(point)
+
+    def highlight_selected_unit(self, cell):
+        point = self.battle_line.get_image_coord(cell)
+        self.cursor.state.highlighter.add_selected_square(point)
+
+    def clear_highlights(self):
+
+        self.cursor.state.highlighter.clear()

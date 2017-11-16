@@ -8,6 +8,9 @@ from src.battle.battle_line import BattleLine
 from battle_state_components.turn_structure import TurnStructure
 from src.ui.battle.disposition_chooser import DispositionChooser
 from src.battle.battle_cursor import BattleCursor
+from src.battle.battle_highlighter import BattleHighlighter
+from battle_state_components.effect_manager import EffectManager
+from src.battle.engagement_runner import EngagementRunner
 
 
 class BattleState(AbstractState):
@@ -33,6 +36,9 @@ class BattleState(AbstractState):
                              'r': BattleLine(self, defender, 'r', self.panel)}
         self.turn_structure = TurnStructure(self)
         self.cursor = BattleCursor(self)
+        self.highlighter = BattleHighlighter(self)
+        self.effect_manager = EffectManager(self)
+        self.engagement_runner = EngagementRunner(self)
 
         self.frame = BattleState.A
         self.frame_tick = 0
@@ -133,11 +139,17 @@ class BattleState(AbstractState):
         for bl in self.battle_lines.values():
             bl.draw(self.subscreen)
 
+        self.effect_manager.draw(self.subscreen)
+
+        self.highlighter.draw(self.subscreen)
+
         self.screen.blit(self.subscreen, (0, 0))
         self.ui.draw(self.screen)
 
     def state_run(self): # real run function
 
+        self.highlighter.run()
+        self.effect_manager.run()
         self.tick()
 
     def tick(self):

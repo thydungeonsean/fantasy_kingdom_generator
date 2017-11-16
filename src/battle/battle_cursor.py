@@ -19,6 +19,7 @@ class BattleCursor(object):
 
     def clear_maneuver(self):
         if self.selected_maneuver is not None:
+            self.selected_maneuver.clear_highlights()
             self.selected_maneuver.free()
             self.set_maneuver(None, None)
 

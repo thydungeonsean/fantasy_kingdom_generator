@@ -31,5 +31,4 @@ class TurnStructure(object):
 
         self.stage = TurnStructure.ENGAGE
         print 'engage part!!!'
-        # open_engage controls
         self.state.ui.add_element(EngageButton(self, self.state.ui))

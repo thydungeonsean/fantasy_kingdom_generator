@@ -8,9 +8,8 @@ class Rally(Maneuver):
         Maneuver.__init__(self)
 
     def init(self):
-        pass
-
-        # highlight all rally able units
+        for unit in self.battle_line.units:  # only valid targets
+            self.highlight_unit(unit.coord)
 
     def click(self, (mx, my)):
         cell = self.cursor.get_player_cell((mx, my))

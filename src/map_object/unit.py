@@ -1,3 +1,4 @@
+from unit_stat import UnitStats
 
 
 class Unit(object):
@@ -9,6 +10,7 @@ class Unit(object):
         self.coord = (0, 0)
         self.image_coord = (0, 0)
 
+        self.stats = UnitStats(self)
         self.image = self.get_reference_to_image()
 
     def get_reference_to_image(self):
