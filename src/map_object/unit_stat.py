@@ -17,7 +17,8 @@ class UnitStats(object):
 
         self.load_stats()
         self.apply_nation_qualities()
-        print self.stats
+
+        self.stats['max_morale'] = self.stats['morale']
 
     def load_stats(self):
 
@@ -46,3 +47,10 @@ class UnitStats(object):
 
     def apply_nation_qualities(self):
         pass
+
+    def get(self, key):
+        return self.stats.get(key, None)
+
+    def take_hits(self, hits):
+
+        self.stats['morale'] -= hits

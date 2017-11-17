@@ -172,3 +172,7 @@ class BattleState(AbstractState):
         state = self.state_manager.load_in_game_menu(self)
         self.set_next_state(state)
         self.trigger_exit()
+
+    def trigger_engagement(self):
+
+        self.engagement_runner.run_engagement()

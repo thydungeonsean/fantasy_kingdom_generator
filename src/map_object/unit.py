@@ -30,3 +30,20 @@ class Unit(object):
 
     def set_image_coord(self, coord):
         self.image_coord = coord
+
+    def take_hits(self, hits):
+
+        self.stats.take_hits(hits)
+        # self.flash()
+
+    @property
+    def dead(self):
+        return self.stats.get('morale') <= 0
+
+    @property
+    def wavering(self):
+        return not self.dead and self.stats.get('morale') < self.stats.get('max_morale')
+
+    def flash(self):
+        pass
+

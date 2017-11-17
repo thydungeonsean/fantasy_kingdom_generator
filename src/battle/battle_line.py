@@ -20,6 +20,8 @@ class BattleLine(object):
     DEFENDING = 1
     ADVANCING = 2
 
+    coord_list = [(x, y) for x in range(2) for y in range(7)]
+
     def __init__(self, state, army, side, panel):
 
         self.state = state
@@ -35,18 +37,30 @@ class BattleLine(object):
         self.background.fill(BLACK)
         self.coord = self.get_battleline_coord()
 
-        self.coord_list = [(x, y) for x in range(2) for y in range(7)]
+        self.coord_list = BattleLine.coord_list
         self.disposition = None
 
+        self.pierced = 0
+
         self.initialize()
+
+    @property
+    def frame(self):
+        return self.state.frame
+
+    def draw_unit(self, unit, surface):
+        unit.draw(surface, self.frame, self.side)
+
+    def draw_unit_effect(self, unit_image, surface):
+        image_key = '_'.join((self.side, self.frame))
+        unit_image.draw_animated(surface, unit_image.image_coord, image_key)
 
     def draw(self, surface):
 
         surface.blit(self.background, self.coord)
 
-        frame = self.state.frame
         for unit in self.units:
-            unit.draw(surface, frame, self.side)
+            self.draw_unit(unit, surface)
 
     def initialize(self):
 
@@ -103,8 +117,41 @@ class BattleLine(object):
 
     def remove_unit(self, unit):
         self.units.remove(unit)
+        self.state.effect_manager.fade_unit(unit, self)
 
     def rout_unit(self, unit):
         # flag to be destroyed
         # update battle scale accordingly
         self.remove_unit(unit)
+
+    def get_unit_at_coord(self, coord):
+        at_coord = filter(lambda u: u.coord == coord, self.units)
+        if len(at_coord) == 0:
+            return None
+        else:
+            return at_coord[0]
+
+    def take_hits(self, hits, row):
+
+        front_unit = self.get_unit_at_coord((0, row))
+        back_unit = self.get_unit_at_coord((1, row))
+        if front_unit is not None:
+            unit = front_unit
+        elif back_unit is not None:
+            unit = back_unit
+        else:
+            unit = None
+
+        if unit is None:
+            self.take_piercing_hits(hits)
+        else:
+            unit.take_hits(hits)
+            self.state.effect_manager.flash_unit(unit, self, hits)
+            if unit.dead:
+                self.rout_unit(unit)
+
+    def take_piercing_hits(self, hits):
+        self.pierced += hits
+        print 'the battle line took %d piercing hits' % hits
+
+

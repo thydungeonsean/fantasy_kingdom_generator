@@ -11,6 +11,7 @@ class UnitImage(Image):
     def __init__(self, key, color):
 
         Image.__init__(self, key, transparent=True)
+        self.key = key
         self.frames = self.set_frames(key)
 
         self.color = UnitImage.BASE_COLOR

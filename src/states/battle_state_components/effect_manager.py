@@ -1,3 +1,5 @@
+from src.battle.effects.flash_effect import FlashEffect
+from src.battle.effects.fade_effect import FadeEffect
 
 
 class EffectManager(object):
@@ -25,3 +27,11 @@ class EffectManager(object):
 
         for effect in self.effects:
             effect.draw(surface)
+
+    def fade_unit(self, unit, battle_line):
+        fade = FadeEffect(self, unit, battle_line)
+        self.add_effect(fade)
+
+    def flash_unit(self, unit, hits, battle_line):
+        flash = FlashEffect(self, unit, battle_line, hits)
+        self.add_effect(flash)

@@ -9,3 +9,9 @@ class Effect(object):
     def end_effect(self):
 
         self.effect_manager.remove_effect(self)
+
+    def draw(self, surface):
+        raise NotImplementedError
+
+    def run(self):
+        pass
