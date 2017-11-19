@@ -60,3 +60,31 @@ class Army(object):
                 unit_object_list.append(Unit(self, unit_key))
 
         return unit_object_list
+
+    def destroy_army(self):
+        print 'army is obliterated'
+        # TODO remove the army from the main objects lists in game state
+
+    def reduce_army(self, losses):  # pass in list of unit_key, count tuples
+
+        unit_dict = {unit_key: count for unit_key, count in self.unit_list}
+
+        wiped_out = []
+        for unit_key, count in losses:
+
+            unit_dict[unit_key] -= count
+            if unit_dict[unit_key] == 0:
+                wiped_out.append(unit_key)
+            elif unit_dict[unit_key] < 0:
+                raise Exception('giving impossible loss quantities')
+
+        for key in wiped_out:
+            del unit_dict[key]
+
+        self.unit_list = [(u, c) for u, c in unit_dict.iteritems()]
+        if len(self.unit_list) == 0:
+            self.destroy_army()
+
+
+
+

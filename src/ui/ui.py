@@ -31,7 +31,9 @@ class UI(object):
     def create_strategic_mode_ui(cls, state):
 
         ui = cls(state)
-        GameUITemplate(state, ui).add_to_state()
+        gt = GameUITemplate(state, ui)
+        gt.add_to_state()
+        state.power_manager.set_power_buttons(gt.power_buttons)
 
         return ui
 

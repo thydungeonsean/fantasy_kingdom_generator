@@ -15,6 +15,7 @@ class TerrainMap(_Map):
     terrain_to_height = {v: k for k, v in height_to_terrain.iteritems()}
 
     LAND = {LOWLAND, SWAMP, FOREST, HIGHLAND, ROUGH, DESERT, MOUNTAIN, RIVER}
+    BUILDABLE = {LOWLAND, SWAMP, FOREST, HIGHLAND, ROUGH, DESERT, MOUNTAIN}
 
     def __init__(self, height_map):
 
@@ -75,4 +76,11 @@ class TerrainMap(_Map):
         for y in range(self.h):
             for x in range(self.w):
                 if self.get_tile((x, y)) in TerrainMap.LAND:
+                    yield x, y
+
+    @property
+    def buildable(self):
+        for y in range(self.h):
+            for x in range(self.w):
+                if self.get_tile((x, y)) in TerrainMap.BUILDABLE:
                     yield x, y

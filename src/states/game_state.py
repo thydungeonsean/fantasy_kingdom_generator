@@ -9,6 +9,7 @@ from game_state_components.nation_list import NationList
 from src.map.procgen.nation_gen.nation_placer import NationPlacer
 from game_state_components.mouse_handler import MouseHandler
 from game_state_components.cursor import Cursor
+from game_state_components.power_manager import PowerManager
 
 
 class GameState(AbstractState):
@@ -20,6 +21,7 @@ class GameState(AbstractState):
 
     def __init__(self, state_manager):
 
+        self.power_manager = PowerManager(self)
         AbstractState.__init__(self, state_manager)
 
         self.nation_list = NationList(self)
@@ -107,7 +109,7 @@ class GameState(AbstractState):
 
                 if event.button == 1:
                     self.mouse_handler.left_click()
-                    self.place_settlement(self.mouse_handler.get_mouse_coord())
+                    # self.place_settlement(self.mouse_handler.get_mouse_coord())
 
                 elif event.button == 3:  # right click
                     self.mouse_handler.right_click()
@@ -145,12 +147,6 @@ class GameState(AbstractState):
 
         self.nation_list.grow_nations()
         self.map_image.update_image()
-
-    def place_settlement(self, point):
-
-        nation = self.nation_list.get_nation_at_point(point)
-        if nation is not None:
-            nation.add_settlement(point)
 
     def choose_nation(self, nation):
 

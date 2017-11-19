@@ -56,22 +56,9 @@ class NationPlacer(object):
         for i in range(cls.NATION_SIZE / 2):
             state.nation_list.grow_nations(spread_amt=5)
 
-        names = set()
+        cls.generate_nation_names(state)
 
-        for nation in state.nation_list.list_nations():
-
-            nation_name = None
-            while nation_name is None:
-                nation_name = NameGen.generate_nation_name(nation)
-                if nation_name in names:
-                    nation_name = None
-                else:
-                    names.add(nation_name)
-                    nation.set_name(nation_name)
-
-            nation.military.add_army((0, 0))
-
-        print names
+        # cls.add_armies(state)
 
     @classmethod
     def valid_capitol_point(cls, terrain, point):
@@ -164,3 +151,26 @@ class NationPlacer(object):
     @classmethod
     def draw_progress_bar(cls, message, progress):
         ProgressBar.draw_load_bar(message, progress)
+
+    @classmethod
+    def generate_nation_names(cls, state):
+
+        names = set()
+
+        for nation in state.nation_list.list_nations():
+
+            nation_name = None
+            while nation_name is None:
+                nation_name = NameGen.generate_nation_name(nation)
+                if nation_name in names:
+                    nation_name = None
+                else:
+                    names.add(nation_name)
+                    nation.set_name(nation_name)
+
+    @classmethod
+    def add_armies(cls, state):
+
+        for nation in state.nation_list.list_nations():
+
+            nation.military.add_army((0, 0))

@@ -12,32 +12,33 @@ class GameUITemplate(StateTemplate):
 
     power_button_coords = {
         'Settle': (x, y),
-        'Raise': (x, y+button_space)
+        'Raise': (x, y+button_space),
+        'Move': (x, y+button_space*2),
     }
 
     power_button_text = {
         'Settle': 'Settle',
-        'Raise': 'Raise Army'
+        'Raise': 'Raise Army',
+        'Move': 'Move Army',
 
     }
 
     def __init__(self, state, ui):
 
-        def settle():
-            print 'place holder'
-
-        self.powers = {'Settle': settle, 'Raise': settle}
-
+        self.power_buttons = {}
         StateTemplate.__init__(self, state, ui)
 
     def initialize_elements(self):
 
         menu_button = self.make_menu_button()
 
-        settle_button = self.make_power_button('Settle')
-        raise_button = self.make_power_button('Raise')
+        power_buttons = [menu_button]
+        for key in ('Settle', 'Raise', 'Move'):
+            button = self.make_power_button(key)
+            self.power_buttons[key] = button
+            power_buttons.append(button)
 
-        return [menu_button, settle_button, raise_button]
+        return power_buttons
 
     def make_menu_button(self):
 
@@ -45,4 +46,13 @@ class GameUITemplate(StateTemplate):
 
     def make_power_button(self, key):
         cls = GameUITemplate
-        return self.make_button(cls.power_button_coords[key], cls.power_button_text[key], self.powers[key])
+        return self.make_button(cls.power_button_coords[key], cls.power_button_text[key],
+                                self.assign_power_select_function(key))
+
+    def assign_power_select_function(self, key):
+
+        def select_power():
+
+            self.state.power_manager.select_power_button(key)
+
+        return select_power

@@ -18,6 +18,8 @@ class MouseHandler(object):
     def left_click(self):
 
         ui_clicked = self.click_ui()
+        if not ui_clicked and self.state.power_manager.selected_power is not None:
+            self.click_power()
 
     def get_mouse_coord(self):
         mx, my = pygame.mouse.get_pos()
@@ -34,6 +36,7 @@ class MouseHandler(object):
 
     def right_click(self):
 
+        self.clear_panels()
         coord = self.get_mouse_coord()
         nation = self.state.nation_list.get_nation_at_point(coord)
         if nation is not None:
@@ -44,6 +47,7 @@ class MouseHandler(object):
         self.clear_panels()
         nation_display = NationDisplay(nation)
         self.ui.add_key_element(nation_display, 'open_panel')
+
         if self.state.mode == self.state.NATION_CHOOSE:
             nation_chooser = NationChooserButton(nation)
             self.ui.add_key_element(nation_chooser, 'nation_chooser')
@@ -56,3 +60,6 @@ class MouseHandler(object):
                     self.ui.key_element_dict.get('nation_chooser', None) is not None:
                 self.ui.remove_key_element('nation_chooser')
 
+    def click_power(self):
+
+        self.state.power_manager.selected_power.click(self.get_mouse_coord())
